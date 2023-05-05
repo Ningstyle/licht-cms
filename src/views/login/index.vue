@@ -15,7 +15,7 @@
       </el-form>
       <span>忘记密码？</span>
     </div>
-    <button @click="changeTheme">点击</button>
+    <!-- <button @click="changeTheme">点击</button> -->
   </div>
 </template>
 
@@ -38,9 +38,9 @@ const rules = reactive<FormRules>({
   password: [{ required: true, message: '密码不能为空', trigger: 'change', },
   ],
 })
-const changeTheme = () => {
-  document.documentElement.style.setProperty('--default-bg-color', '#f0f0f0')
-}
+// const changeTheme = () => {
+//   document.documentElement.style.setProperty('--default-bg-color', '#f0f0f0')
+// }
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate((valid) => {

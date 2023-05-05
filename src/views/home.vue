@@ -3,47 +3,11 @@
     <div class="menu_box">
       <div class="logo_box">
         <img src="../assets/logo.png" alt="">
-        <span v-if="!isCollapse">licht CMS</span>
+        <span :class="titleClass">licht CMS</span>
       </div>
-      <el-menu default-active="2" class="el-menu-vertical-demo" :collapse="isCollapse" @open="handleOpen"
-        active-text-color="var(--default-text-active-color)" background-color="var(--default-bg-color)" text-color="#fff"
-        @close="handleClose">
-        <el-sub-menu index="1">
-          <template #title>
-            <el-icon>
-              <location />
-            </el-icon>
-            <span>Navigator One</span>
-          </template>
-          <el-menu-item-group>
-            <template #title><span>Group One</span></template>
-            <el-menu-item index="1-1">item one</el-menu-item>
-            <el-menu-item index="1-2">item two</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="Group Two">
-            <el-menu-item index="1-3">item three</el-menu-item>
-          </el-menu-item-group>
-          <el-sub-menu index="1-4">
-            <template #title><span>item four</span></template>
-            <el-menu-item index="1-4-1">item one</el-menu-item>
-          </el-sub-menu>
-        </el-sub-menu>
-        <el-menu-item index="2">
-          <el-icon><icon-menu /></el-icon>
-          <template #title>Navigator Two</template>
-        </el-menu-item>
-        <el-menu-item index="3" disabled>
-          <el-icon>
-            <document />
-          </el-icon>
-          <template #title>Navigator Three</template>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <el-icon>
-            <setting />
-          </el-icon>
-          <template #title>Navigator Four</template>
-        </el-menu-item>
+      <el-menu class="el-menu-vertical-demo" :collapse="isCollapse" active-text-color="var(--default-text-active-color)"
+        background-color="var(--default-bg-color)" text-color="#fff">
+        <menuTree />
       </el-menu>
     </div>
     <div class="view_box">
@@ -59,7 +23,42 @@
             <el-breadcrumb-item>内容</el-breadcrumb-item>
           </el-breadcrumb>
         </div>
-        <div class="downmenu"></div>
+        <div class="downmenu">
+          <el-dropdown>
+            <span class="el-dropdown-link">
+              <el-avatar :size="24" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" />
+              管理员
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  <el-icon>
+                    <Unlock />
+                  </el-icon>
+                  修改密码
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <el-icon>
+                    <UserFilled />
+                  </el-icon>
+                  个人信息
+                </el-dropdown-item>
+                <el-dropdown-item divided>
+                  <el-icon>
+                    <MagicStick />
+                  </el-icon>
+                  主题切换
+                </el-dropdown-item>
+                <el-dropdown-item divided>
+                  <el-icon>
+                    <SwitchButton />
+                  </el-icon>
+                  退出登录
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
       </div>
     </div>
   </div>
@@ -67,28 +66,14 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import {
-  Document,
-  Menu as IconMenu,
-  Location,
-  Setting,
-} from '@element-plus/icons-vue'
-
+import menuTree from '@/components/common/menu.vue'
 const isCollapse = ref(false)
 const menuWidth = computed(() => {
   return isCollapse.value ? '64px' : '240px'
 })
-// if (isCollapse.value) {
-//   menuWidth.value = '64px'
-// } else {
-//   menuWidth.value = '240px'
-// }
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+const titleClass = computed(() => {
+  return isCollapse.value ? 'hideClass' : 'showClass'
+})
 </script>
 
 <style lang="scss" scoped>
@@ -116,12 +101,31 @@ const handleClose = (key: string, keyPath: string[]) => {
       img {
         width: 26px;
         height: 26px;
+        margin-left: 10px;
       }
 
-      span {
+      span.showClass {
+        width: 100px;
+        height: 30px;
         font-size: 20px;
         font-weight: bold;
         color: var(--default-text-color);
+        transition: all .7s ease;
+        display: inline-block;
+        overflow: hidden;
+        opacity: 1;
+      }
+
+      span.hideClass {
+        width: 0px;
+        height: 30px;
+        font-size: 20px;
+        font-weight: bold;
+        color: var(--default-text-color);
+        transition: all .7s ease;
+        display: inline-block;
+        overflow: hidden;
+        opacity: 0;
       }
     }
 
@@ -131,12 +135,6 @@ const handleClose = (key: string, keyPath: string[]) => {
 
       :deep(.el-sub-menu__title) {
         padding-right: 0 !important;
-      }
-
-      :deep(.el-menu-item) {
-        &:hover {
-          background-color: var(--default-menu-hover-color);
-        }
       }
 
       .el-icon {
@@ -177,6 +175,18 @@ const handleClose = (key: string, keyPath: string[]) => {
           &:hover {
             background-color: #f1f1f1;
           }
+        }
+      }
+
+      .downmenu {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+
+        .el-dropdown-link {
+          display: flex;
+          align-items: center;
+          gap: 0 6px;
         }
       }
     }
