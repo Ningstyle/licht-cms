@@ -1,11 +1,15 @@
-#app {
-  button {
-    background-color: var(--default-element-from-color) !important;
-    border-color: var(--default-element-from-color) !important;
-  }
+button {
+  background-color: var(--default-element-from-color) !important;
+  border-color: var(--default-element-from-color) !important;
+}
 
-  .is-focus {
-    border-color: var(--default-element-from-color) !important;
-    box-shadow: 0 0 0 1px var(--default-element-from-color) inset !important;
+.is-focus {
+  border-color: var(--default-element-from-color) !important;
+  box-shadow: 0 0 0 1px var(--default-element-from-color) inset !important;
+}
+
+.el-menu-item {
+  &:hover {
+    background-color: var(--default-menu-hover-color) !important;
   }
 }
